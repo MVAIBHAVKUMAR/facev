@@ -53,5 +53,9 @@ def Find(img_path, db_path):
     )
 
     print(demographies)
-    result["results"] = json.dumps(demographies[0])
+    df = pd.DataFrame(demographies[0])
+    print('\n\n\n')
+    print(df)
+    result["results"] = df.to_dict(orient='records')
+    
     return result

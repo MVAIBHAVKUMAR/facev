@@ -1,37 +1,36 @@
-// Get the face recognition button element
-const faceRecognitionBtn = document.querySelector('#face-recognition-btn');
+// Get the button element
+const button = document.getElementById('submit-btn');
 
-// Add event listener to the button
-faceRecognitionBtn.addEventListener('click', () => {
-  // Get the video element and set its source
-  const video = document.querySelector('#video');
-  video.srcObject = navigator.mediaDevices.getUserMedia({ video: true });
+// Add event listener for click event
+button.addEventListener('click', () => {
+  // Get the input element
+  const input = document.getElementById('image-input');
 
-  // Get the canvas element and the context
-  const canvas = document.querySelector('#canvas');
-  const context = canvas.getContext('2d');
+  // Get the value of the input
+  const image = input.value;
 
-  // Get the face detector
-  const faceDetector = new window.FaceDetector();
-
-  // Start capturing the video stream
-  video.onloadedmetadata = function() {
-    video.play();
-    setInterval(async () => {
-      // Draw the video frame on the canvas
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      // Detect faces in the canvas
-      const faces = await faceDetector.detect(canvas);
-
-      // Draw a rectangle around each face
-      faces.forEach(face => {
-        const { x, y, width, height } = face.boundingBox;
-        context.strokeStyle = '#00FF00';
-        context.lineWidth = 2;
-        context.strokeRect(x, y, width, height);
-      });
-    }, 1000);
-  };
+  // Call the face recognition API with the image URL
+  recognizeFace(image);
 });
 
+// Function to call the face recognition API
+function recognizeFace(image) {
+  // Send a request to the API endpoint
+  fetch('https://api.facerecognition.com/recognize', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ image: image })
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Display the result on the page
+    const resultContainer = document.getElementById('result-container');
+    resultContainer.innerHTML = `The face in the image belongs to ${data.name}.`;
+  })
+  .catch(error => {
+    console.error(error);
+    alert('There was an error recognizing the face.');
+  });
+}
