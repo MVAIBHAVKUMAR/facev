@@ -12,11 +12,6 @@ function recognizeFace() {
 		},
 		body: JSON.stringify(data)
 	})
-		// .then(response => response.json())
-		// .then(data => {
-		// 	console.log('Vaibhav')
-		// 	console.log(data)
-		// })
 		.then(response => response.blob())
 		.then(blob => {
 			// Create a temporary URL for the blob object
@@ -49,11 +44,36 @@ function recognizeFace() {
 
 const generateButton = document.getElementById("generate");
 const container = document.getElementById('download');
+const getClass = document.getElementById('class');
+const getSection = document.getElementById('section');
+var input = document.getElementById("image-upload");
+
+function handleFileSelect(evt) {
+	var file = evt.target.files[0]; // Get the file object
+	console.log(file);
+	var reader = new FileReader();
+
+	reader.onload = function () {
+		var path = reader.result; // Get the path from the reader's result
+		console.log(path);
+	};
+
+	reader.readAsDataURL(file); // Read the file as a data URL
+}
+
+
+input.addEventListener('change', handleFileSelect, false);
+
+
 
 if (generateButton) {
 	generateButton.addEventListener('click', function () {
 		console.log('Generating excel sheet...');
-		recognizeFace();
+		// recognizeFace();
+		var file = input.files[0];
+		var path = URL.createObjectURL(file);
+		console.log(window.location.pathname);
+		console.log(path);
 	});
 } else {
 	console.error('Could not find generate button element');
