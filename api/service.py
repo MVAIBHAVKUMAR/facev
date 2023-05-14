@@ -1,8 +1,7 @@
+import io
 from deepface import DeepFace
-import numpy as np
 import pandas as pd
-import json
-
+from flask import make_response
 
 def represent(img_path, model_name, detector_backend, enforce_detection, align):
     result = {}
@@ -45,7 +44,7 @@ def analyze(img_path, actions, detector_backend, enforce_detection, align):
     return result
 
 
-def Find(img_path, db_path):
+def find(img_path, db_path):
     result = {}
     demographies = DeepFace.find(
         img_path=img_path,
@@ -54,8 +53,26 @@ def Find(img_path, db_path):
 
     print(demographies)
     df = pd.DataFrame(demographies[0])
+
     print('\n\n\n')
     print(df)
+
     result["results"] = df.to_dict(orient='records')
     
-    return result
+
+    print('\n\n\n')
+    print('result :: \n\n\n\n')
+    print(result)
+
+    # Create an Excel file and add the results to it
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='Results', index=False)
+    writer.save()
+
+    # Create a response with the Excel file and auto-download it
+    response = make_response(output.getvalue())
+    response.headers.set('Content-Disposition', 'attachment', filename='results.xlsx')
+    response.headers.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    
+    return response

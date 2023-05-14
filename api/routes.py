@@ -100,8 +100,8 @@ def analyze():
     return demographies
 
 
-@blueprint.route("/Find", methods=["POST"])
-def Find():
+@blueprint.route("/find", methods=["POST"])
+def find():
     input_args = request.get_json()
 
     if input_args is None:
@@ -115,7 +115,7 @@ def Find():
     if db_path is None:
         return {"message": "you must pass db_path input"}
     
-    demographies = service.Find(
+    demographies = service.find(
         img_path=img_path,
         db_path=db_path
     )

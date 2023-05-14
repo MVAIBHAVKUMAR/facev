@@ -1,65 +1,60 @@
-// function recognizeFace() {
-//     // Send a request to the API endpoint
-//     fetch('http://127.0.0.1:5000/Find', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'json'
-//         },
-//         body: ({
-//             "img_path": "C:/Users/mvaib/OneDrive - rupee/Desktop/facev/data/img68.jpg",
-//             "db_path": "C:/Users/mvaib/OneDrive - rupee/Desktop/facev/db"
-//         })
-//     })
-//         .then(response => response.json())
-//         .then(data => {
-//             // Display the result on the page
-//             // const resultContainer = document.getElementById('result-container');
-//             // resultContainer.innerHTML = `The face in the image belongs to ${data.name}.`;
-//             console.log(data)
-//         })
-//         // .catch(error => {
-//         //     console.error(error);
-//         //     alert('There was an error recognizing the face.');
-//         // });
-// }
-
 function recognizeFace() {
-const url = 'http://127.0.0.1:5000/Find';
-const data = {
-  img_path: 'C:/Users/mvaib/OneDrive - rupee/Desktop/facev/data/img68.jpg',
-  db_path: 'C:/Users/mvaib/OneDrive - rupee/Desktop/facev/db'
-};
+	const url = 'http://127.0.0.1:5000/find';
+	const data = {
+		"img_path": 'C:/Users/mvaib/OneDrive - rupee/Desktop/facev/data/img68.jpg',
+		"db_path": 'C:/Users/mvaib/OneDrive - rupee/Desktop/facev/db'
+	};
 
-fetch(url, {
-  method: 'Find',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data)
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Response:', data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(data)
+	})
+		// .then(response => response.json())
+		// .then(data => {
+		// 	console.log('Vaibhav')
+		// 	console.log(data)
+		// })
+		.then(response => response.blob())
+		.then(blob => {
+			// Create a temporary URL for the blob object
+			const url = window.URL.createObjectURL(blob);
+			console.log(url);
+
+
+			// Create a link element and simulate a click to trigger a download
+			const a = document.createElement('a');
+
+			a.href = url;
+			a.download = 'results.xlsx';
+
+			console.log(a);
+			// container.appendChild('a');
+			const parent = document.querySelector('#download');
+			if (parent) {
+				parent.appendChild(a);
+			} else {
+				console.error('Parent element not found');
+			}
+
+			a.click();
+			window.URL.revokeObjectURL(url);
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
 }
 
-// console.log('heloo')
-
-// const generateExcelBtn = document.getElementById('generate-excel');
-// document.getElementById("generate").addEventListener('click',function () {
-//     console.log('Generating excel sheet...');
-//     recognizeFace();
-// });
-
 const generateButton = document.getElementById("generate");
+const container = document.getElementById('download');
+
 if (generateButton) {
-  generateButton.addEventListener('click',function () {
-    console.log('Generating excel sheet...');
-    recognizeFace();
-  });
+	generateButton.addEventListener('click', function () {
+		console.log('Generating excel sheet...');
+		recognizeFace();
+	});
 } else {
-  console.error('Could not find generate button element');
+	console.error('Could not find generate button element');
 }

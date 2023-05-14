@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WELCOME USER</title>
+    <link rel="stylesheet" type="text/css" href="happy.css">
+</head>
+
+<body>
+    <h1>Welcome to the Making it easy!</h1>
+    <div id="formm">
+        <div id="class-select">
+            <label for="class">Select Class:</label>
+            <select id="class" name="class">
+                <option value="class1">Class BDA1</option>
+                <option value="class2">Class BDA2</option>
+                <option value="class3">Class BDA3</option>
+            </select>
+        </div>
+
+        <div id="section-select">
+            <label for="section">Select Section:</label>
+            <select id="section" name="section">
+                <option value="sectionA">Section A</option>
+                <option value="sectionB">Section B</option>
+            </select>
+        </div>
+
+        <div id="image-upload">
+            <label for="image-upload">Upload Image:</label>
+            <input type="file" id="image-upload" name="image-upload">
+        </div>
+    </div>
+
+    <button id="generate">Generate Excel Sheet</button>
+    <div id="download"></div>
+
+    <script type="module" src="happy.js"></script>
+</body>
+
+</html>
