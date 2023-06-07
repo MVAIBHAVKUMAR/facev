@@ -1,7 +1,7 @@
 function recognizeFace() {
 	const url = 'http://127.0.0.1:5000/find';
 	const data = {
-		"img_path": 'C:/Users/mvaib/OneDrive - rupee/Desktop/facev/data/img68.jpg',
+		"img_path": 'C:/Users/mvaib/OneDrive - rupee/Desktop/facev/data/img69.jpg',
 		"db_path": 'C:/Users/mvaib/OneDrive - rupee/Desktop/facev/db'
 	};
 
@@ -46,34 +46,23 @@ const generateButton = document.getElementById("generate");
 const container = document.getElementById('download');
 const getClass = document.getElementById('class');
 const getSection = document.getElementById('section');
-var input = document.getElementById("image-upload");
-
-function handleFileSelect(evt) {
-	var file = evt.target.files[0]; // Get the file object
-	console.log(file);
-	var reader = new FileReader();
-
-	reader.onload = function () {
-		var path = reader.result; // Get the path from the reader's result
-		console.log(path);
-	};
-
-	reader.readAsDataURL(file); // Read the file as a data URL
-}
-
-
-input.addEventListener('change', handleFileSelect, false);
-
-
+var input = document.getElementById("imageupload");
+var path;
+input.addEventListener('change', function () {
+	if (input.files && input.files[0]) {
+		path = URL.createObjectURL(input.files[0]);
+		console.log(path)
+	}
+	else {
+		console.log('input files are not there');
+	}
+	console.log('in change function ');
+});
 
 if (generateButton) {
 	generateButton.addEventListener('click', function () {
 		console.log('Generating excel sheet...');
-		// recognizeFace();
-		var file = input.files[0];
-		var path = URL.createObjectURL(file);
-		console.log(window.location.pathname);
-		console.log(path);
+		recognizeFace();
 	});
 } else {
 	console.error('Could not find generate button element');

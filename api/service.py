@@ -2,6 +2,8 @@ import io
 from deepface import DeepFace
 import pandas as pd
 from flask import make_response
+from PIL import Image
+import requests
 
 def represent(img_path, model_name, detector_backend, enforce_detection, align):
     result = {}
@@ -46,8 +48,14 @@ def analyze(img_path, actions, detector_backend, enforce_detection, align):
 
 def find(img_path, db_path):
     result = {}
+
+    # response = requests.get(img_path[5:])
+    
+    # with open('image.png', 'wb') as f:
+    #     f.write(response.content)
+
     demographies = DeepFace.find(
-        img_path=img_path,
+        img_path= img_path,
         db_path= db_path
     )
 
